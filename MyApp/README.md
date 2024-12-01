@@ -35,16 +35,67 @@ npm run reset-project
 
 This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-## Learn more
+Weather App
 
-To learn more about developing your project with Expo, look at the following resources:
+A mobile-friendly weather application built with React Native and Expo. This app displays current weather conditions, a 7-day forecast, and allows users to search for cities dynamically. The app utilizes APIs to provide accurate weather data.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Features
 
-## Join the community
+	•	Display current weather with temperature, condition, and icons.
+	•	View a 7-day weather forecast.
+	•	Search for cities dynamically with suggestions.
+	•	Fully responsive and optimized for mobile devices.
+	•	Dark and light mode support.
 
-Join our community of developers creating universal apps.
+Table of Contents
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+	1.	Installation
+	2.	Usage
+	3.	APIs Used
+	4.	File Structure
+	5.	Available Scripts
+	6.	Contributing
+	7.	License
+
+Installation
+
+Prerequisites
+
+	1.	Ensure you have Node.js installed on your system.
+	2.	Install Expo CLI globally if not already installed.
+	3.	Ensure Git is installed on your system.
+
+Steps to Install
+
+	1.	Clone the repository and navigate to the project directory.
+	2.	Install all dependencies.
+	3.	Create a .env file in the root of the project and add your API keys:
+	•	GEO_API_KEY
+	•	WEATHER_API_KEY
+	4.	Start the development server and follow the instructions to run the app on an emulator, simulator, or physical device.
+
+Usage
+
+	1.	Search for cities using the search bar. Suggestions will appear dynamically as you type.
+	2.	View current weather details like temperature, condition, and weather icon for the selected city.
+	3.	Scroll through the 7-day forecast to see daily temperature ranges and weather conditions.
+	4.	The app automatically adjusts its theme based on your system settings.
+
+APIs Used
+
+	1.	GeoDB API: Provides city search and population data.
+	2.	OpenWeather API: Provides current weather and 7-day forecast data.
+
+File Structure
+
+weather-app/
+├── assets/                Static assets like fonts and images
+├── components/            Reusable components (e.g., Search, CurrentWeather, Forecast)
+│   ├── search/            Search bar with suggestions
+│   ├── current-weather/   Displays current weather conditions
+│   └── forecast/          Displays 7-day weather forecast
+├── constants/             API keys, URLs, and reusable constants
+├── hooks/                 Custom hooks (e.g., useColorScheme)
+├── App.js                 Main application entry point
+├── app.config.js          Expo configuration
+└── README.md              Project documentation

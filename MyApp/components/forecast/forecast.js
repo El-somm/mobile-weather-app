@@ -1,87 +1,7 @@
-// import React from "react";
-// import {
-//   Accordion,
-//   AccordionItemHeading,
-//   AccordionItem,
-//   AccordionItemPanel,
-//   AccordionItemButton,
-// } from "react-accessible-accordion";
-// import './forecast.css';
-
-// const WEEK_DAYS = [
-//   'Monday',
-//   'Tuesday',
-//   'Wednesday',
-//   'Thursday',
-//   'Friday',
-//   'Saturday',
-//   'Sunday',
-// ];
-
-// const Forecast = ({ data }) => {
-//   const dayInAWeek = new Date().getDay();
-//   const forecastDays = WEEK_DAYS.slice(dayInAWeek, WEEK_DAYS.length).concat(
-//     WEEK_DAYS.slice(0, dayInAWeek)
-//   );
-
-//   if (!data || !data.list) {
-//     return <div>No forecast data available.</div>; // Fallback UI
-//   }
-
-//   return (
-//     <>
-//       <label className="title">Daily</label>
-//       <Accordion allowZeroExpanded>
-//         {data.list.slice(0, 7).map((item, idx) => (
-//           <AccordionItem key={idx}>
-//             <AccordionItemHeading>
-//               <AccordionItemButton>
-//                 <div className="daily-item">
-//                   <img
-//                     alt="weather"
-//                     className="icon-small"
-//                     src={`icons/${item.weather[0].icon}.png`}
-//                   />
-//                   <label className="day">{forecastDays[idx]}</label>
-//                   <label className="description">
-//                     {item.weather[0].description}
-//                   </label>
-//                   <label className="min-max">
-//                     {Math.round(item.main.temp_min)}°C / {Math.round(item.main.temp_max)}°C
-//                   </label>
-//                 </div>
-//               </AccordionItemButton>
-//             </AccordionItemHeading>
-//             <AccordionItemPanel>
-//   <div className="daily-details-grid">
-//     {[
-//       { label: "Pressure", value: `${item.main.pressure} hPa` },
-//       { label: "Humidity", value: `${item.main.humidity}%` },
-//       { label: "Clouds", value: `${item.clouds.all}%` },
-//       { label: "Wind Speed", value: `${item.wind.speed} m/s` },
-//       { label: "Sea Level", value: `${item.main.sea_level} m` },
-//       { label: "Feels Like", value: `${Math.round(item.main.feels_like)}°C` },
-//     ].map((detail, index) => (
-//       <div key={index} className="daily-details-grid-item">
-//         <label>{detail.label}: </label>
-//         <label>{detail.value}</label>
-//       </div>
-//     ))}
-//   </div>
-// </AccordionItemPanel>
 
 
-//           </AccordionItem>
-//         ))}
-//         <AccordionItem />
-//       </Accordion>
-//     </>
-//   );
-// };
-
-// export default Forecast;
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, FlatList } from "react-native";
 
 const WEEK_DAYS = [
   "Monday",
@@ -102,26 +22,37 @@ const Forecast = ({ data }) => {
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={styles.title}>7-Day Forecast</Text>
-      {data.list.slice(0, 7).map((item, idx) => (
-        <View key={idx} style={styles.dailyItem}>
-          <Image
-            style={styles.icon}
-            source={{ uri: `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png` }}
-          />
-          <Text style={styles.day}>{forecastDays[idx]}</Text>
-          <Text style={styles.description}>{item.weather[0].description}</Text>
-          <Text style={styles.minMax}>
-            {Math.round(item.main.temp_min)}°C / {Math.round(item.main.temp_max)}°C
-          </Text>
-        </View>
-      ))}
+      <FlatList
+        data={data.list.slice(0, 7)} // Limit to 7 days
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item, index }) => (
+          <View style={styles.dailyItem}>
+            <Image
+              style={styles.icon}
+              source={{
+                uri: `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`,
+              }}
+            />
+            <Text style={styles.day}>{forecastDays[index]}</Text>
+            <Text style={styles.description}>{item.weather[0].description}</Text>
+            <Text style={styles.minMax}>
+              {Math.round(item.main.temp_min)}°C / {Math.round(item.main.temp_max)}°C
+            </Text>
+          </View>
+        )}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: "#f8f8f8",
+  },
   title: {
     fontSize: 20,
     fontWeight: "bold",
@@ -129,27 +60,41 @@ const styles = StyleSheet.create({
   },
   dailyItem: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
     padding: 10,
     backgroundColor: "#fff",
     borderRadius: 10,
     marginVertical: 5,
+    elevation: 3, // For shadow on Android
+    shadowColor: "#000", // For shadow on iOS
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
   },
   icon: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
+    marginRight: 10,
   },
   day: {
     fontSize: 16,
     fontWeight: "bold",
+    flex: 1, // Allow it to grow or shrink
+    minWidth: 80, // Ensures day stays on one line
+    flexShrink: 0, // Prevent shrinking
+    textAlign: "left",
   },
   description: {
     fontSize: 14,
     color: "#555",
+    textAlign: "center",
+    flex: 2, // Center the description
   },
   minMax: {
     fontSize: 14,
+    fontWeight: "bold",
+    textAlign: "right",
+    flex: 1, // Aligns temperature data on the right
   },
 });
 
